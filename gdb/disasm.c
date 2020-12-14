@@ -262,7 +262,6 @@ gdb_pretty_print_disassembler::pretty_print_insn (const struct disasm_insn *insn
       {
 	CORE_ADDR end_pc;
 	bfd_byte data;
-	const char *spacer = "";
 
 	/* Build the opcodes using a temporary stream so we can
 	   write them out in a single go for the MI.  */
@@ -270,16 +269,17 @@ gdb_pretty_print_disassembler::pretty_print_insn (const struct disasm_insn *insn
 
 	size = m_di.print_insn (pc);
 	end_pc = pc + size;
-
 	for (;pc < end_pc; ++pc)
 	  {
 	    read_code (pc, &data, 1);
-	    m_opcode_stb.printf ("%s%02x", spacer, (unsigned) data);
-	    spacer = " ";
+	    m_opcode_stb.printf ("%02x", (unsigned) data);
 	  }
+        /* max 10-byte insn */
+	for (unsigned i=size*2; i < 20; ++i)
+	  m_opcode_stb.printf (" ");
 
 	m_uiout->field_stream ("opcodes", m_opcode_stb);
-	m_uiout->text ("\t");
+	m_uiout->text (" ");
       }
     else
       size = m_di.print_insn (pc);
