@@ -448,7 +448,8 @@ gdb_pretty_print_disassembler::pretty_print_insn (const struct disasm_insn *insn
 	/* Print the instruction opcodes bytes, grouped into chunks.  */
 	for (int i = 0; i < size; i += bytes_per_chunk)
 	  {
-	    if (i > 0)
+	    /* bytewise no seperator, as in objdump -d */
+	    if (bytes_per_chunk != 1 && i > 0)
 	      m_opcode_stb.puts (" ");
 
 	    if (di->display_endian == BFD_ENDIAN_LITTLE)
@@ -463,18 +464,18 @@ gdb_pretty_print_disassembler::pretty_print_insn (const struct disasm_insn *insn
 	      }
 	  }
 
-	/* Calculate required padding.  */
+	/* Calculate required padding. max 10-byte insns */
 	int nspaces = 0;
-	for (int i = size; i < bytes_per_line; i += bytes_per_chunk)
+	for (int i = size; i < std::max(bytes_per_line, 10); i += bytes_per_chunk)
 	  {
-	    if (i > size)
+	    if (i > size && bytes_per_chunk != 1)
 	      nspaces++;
 	    nspaces += bytes_per_chunk * 2;
 	  }
 
 	m_uiout->field_stream ("opcodes", m_opcode_stb);
 	m_uiout->spaces (nspaces);
-	m_uiout->text ("\t");
+	m_uiout->text (" ");
       }
 
     /* Disassembly was a success, write out the instruction buffer.  */
