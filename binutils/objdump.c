@@ -3408,7 +3408,7 @@ disassemble_bytes (struct disassemble_info *inf,
 	    show_line (aux->abfd, section, addr_offset);
 
 	  if (no_addresses)
-	    printf ("\t");
+	    printf ("  ");
 	  else if (!prefix_addresses)
 	    {
 	      char *s;
@@ -3418,14 +3418,14 @@ disassemble_bytes (struct disassemble_info *inf,
 		*s = ' ';
 	      if (*s == '\0')
 		*--s = '0';
-	      printf ("%s:\t", buf + skip_addr_chars);
+	      printf ("%s:  ", buf + skip_addr_chars);
 	    }
 	  else
 	    {
 	      aux->require_sec = true;
 	      objdump_print_address (section->vma + addr_offset, inf);
 	      aux->require_sec = false;
-	      putchar (' ');
+	      //putchar (' ');
 	    }
 
 	  print_jump_visualisation (section->vma + addr_offset,
@@ -3589,7 +3589,7 @@ disassemble_bytes (struct disassemble_info *inf,
 			    printf ("%02x", (unsigned) data[j + k]);
 			}
 		    }
-		  putchar (' ');
+		  //putchar (' ');
 		}
 
 	      for (; pb < octets_per_line; pb += bpc)
@@ -3598,7 +3598,7 @@ disassemble_bytes (struct disassemble_info *inf,
 
 		  for (k = 0; k < bpc; k++)
 		    printf ("  ");
-		  putchar (' ');
+		  //putchar (' ');
 		}
 
 	      /* Separate raw data from instruction by extra space.  */
