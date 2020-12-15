@@ -378,7 +378,7 @@ valprint_check_validity (struct ui_file *stream,
 				       TARGET_CHAR_BIT * type->length ()))
 	{
 	  val_print_optimized_out (val, stream);
-	  return 0;
+	  //return 0;
 	}
 
       if (val->bits_synthetic_pointer (TARGET_CHAR_BIT * embedded_offset,
@@ -415,11 +415,11 @@ valprint_check_validity (struct ui_file *stream,
 
 void
 val_print_optimized_out (const struct value *val, struct ui_file *stream)
-{
-  if (val != NULL && val->lval () == lval_register)
-    val_print_not_saved (stream);
-  else
-    fprintf_styled (stream, metadata_style.style (), _("<optimized out>"));
+{  
+  //if (val != NULL && val->lval () == lval_register)
+  //  val_print_not_saved (stream);
+  //else
+    fprintf_styled (stream, metadata_style.style (), _("?"));
 }
 
 void
