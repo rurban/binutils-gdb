@@ -175,6 +175,9 @@
 #include "libiberty.h"
 #include "safe-ctype.h"
 #include "filenames.h"
+#ifdef HAVE_LIBU8IDENT
+#include "u8ident.h"
+#endif
 
 #ifndef offsetof
 #define offsetof(TYPE, MEMBER) ((size_t) &(((TYPE *) 0)->MEMBER))
@@ -689,6 +692,15 @@ print_symbol_name (signed int width, const char * symbol)
       if (res != NULL)
 	alloced_symbol = symbol = res;
     }
+
+#ifdef HAVE_LIBU8IDENT
+  if (do_checks)
+    {
+      int err = u8ident_check(symbol, 0);
+      if (err != 0)
+	printf ("U8CHECK %d %s\n", err, symbol);
+    }
+#endif
 
   while (width_remaining)
     {
