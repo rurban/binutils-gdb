@@ -853,22 +853,28 @@ print_symbol_name (signed int width, const char * symbol)
 	{
 #ifdef HAVE_MBSTATE_T
 	  wchar_t w;
-#endif
-	  /* Let printf do the hard work of displaying multibyte characters.  */
-	  printf ("%.1s", symbol - 1);
-	  width_remaining --;
-	  num_printed ++;
-
-#ifdef HAVE_MBSTATE_T
 	  /* Try to find out how many bytes made up the character that was
 	     just printed.  Advance the symbol pointer past the bytes that
 	     were displayed.  */
 	  n = mbrtowc (& w, symbol - 1, MB_CUR_MAX, & state);
 #else
-	  n = 1;
+	  n = (unsigned char)*(symbol - 1) >= 0xc8) ? 2 : 1; // at least is enough
 #endif
-	  if (n != (size_t) -1 && n != (size_t) -2 && n > 0)
-	    symbol += (n - 1);
+	  if (n != (size_t) -1 && n != (size_t) -2 && n > 1) {
+	    /* printf cannot print single multibyte sequences */
+	    for (unsigned i = 0; i < n; i ++) {
+	      putchar(*(symbol - 1));
+	      symbol ++;
+	    }
+	    width_remaining --;
+	    num_printed ++;
+	  } else {
+	    printf ("%-.1s", symbol - 1);
+	    width_remaining --;
+	    num_printed ++;
+	    if (n != (size_t) -1 && n != (size_t) -2 && n > 0)
+	      symbol += (n - 1);
+	  }
 	}
     }
 
