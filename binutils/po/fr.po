@@ -10568,7 +10568,7 @@ msgstr "Valeur de visibilité non reconnue : %u\n"
 #: readelf.c:13260
 #, c-format
 msgid "Unrecognized alpha specific other value: %u\n"
-msgstr "Autre valeur spécifique alpah non reconnue: %u\n"
+msgstr "Autre valeur spécifique alpha non reconnue: %u\n"
 
 #: readelf.c:13337
 #, c-format
