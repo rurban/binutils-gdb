@@ -1553,6 +1553,14 @@ AC_SUBST(PGO_BUILD_LTO_CFLAGS)
 # Used for setting $lt_cv_objdir
 _LT_CHECK_OBJDIR
 
+# Check for experimental optional libu8ident for readelf lint
+AC_CHECK_LIB([u8ident],[u8ident_check],
+   [LIBU8IDENT=-lu8ident; HAVE_LIBU8IDENT=1],
+    [LIBU8IDENT="`pkg-config libu8ident --libs`";
+     test -n "$LIBU8IDENT" && HAVE_LIBU8IDENT=1])
+AC_SUBST([LIBU8IDENT])
+AC_SUBST([HAVE_LIBU8IDENT])
+
 # Check for GMP, MPFR and MPC
 require_gmp=no
 require_mpc=no
@@ -2566,7 +2574,7 @@ AC_ARG_WITH([target-bdw-gc-include],
 AC_ARG_WITH([target-bdw-gc-lib],
 [AS_HELP_STRING([--with-target-bdw-gc-lib=PATHLIST],
 		[specify directories for installed bdw-gc library])])
-		  
+
 case ,${enable_languages},:${enable_objc_gc} in *,objc,*:yes|*,objc,*:auto)
   AC_MSG_CHECKING([for bdw garbage collector])
   if test "x$with_target_bdw_gc$with_target_bdw_gc_include$with_target_bdw_gc_lib" = x; then

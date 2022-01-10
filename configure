@@ -710,6 +710,8 @@ extra_mpc_gmp_configure_flags
 extra_mpfr_configure_flags
 gmpinc
 gmplibs
+HAVE_LIBU8IDENT
+LIBU8IDENT
 PGO_BUILD_LTO_CFLAGS
 PGO_BUILD_USE_CFLAGS
 PGO_BUILD_GEN_CFLAGS
@@ -8775,6 +8777,53 @@ objdir=$lt_cv_objdir
 cat >>confdefs.h <<_ACEOF
 #define LT_OBJDIR "$lt_cv_objdir/"
 _ACEOF
+
+
+
+# Check for experimental optional libu8ident for readelf lint
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for u8ident_check in -lu8ident" >&5
+$as_echo_n "checking for u8ident_check in -lu8ident... " >&6; }
+if ${ac_cv_lib_u8ident_u8ident_check+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lu8ident  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char u8ident_check ();
+int
+main ()
+{
+return u8ident_check ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_u8ident_u8ident_check=yes
+else
+  ac_cv_lib_u8ident_u8ident_check=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_u8ident_u8ident_check" >&5
+$as_echo "$ac_cv_lib_u8ident_u8ident_check" >&6; }
+if test "x$ac_cv_lib_u8ident_u8ident_check" = xyes; then :
+  LIBU8IDENT=-lu8ident; HAVE_LIBU8IDENT=1
+else
+  LIBU8IDENT="`pkg-config libu8ident --libs`";
+     test -n "$LIBU8IDENT" && HAVE_LIBU8IDENT=1
+fi
+
 
 
 
