@@ -820,6 +820,23 @@ process_file (const char *file_name)
   return ret;
 }
 
+/* Not in our elf headers, but used in llvm and FreeBSD */
+#ifndef ELFOSABI_HURD
+#define ELFOSABI_HURD 4
+#endif
+#ifndef ELFOSABI_ARM_AEABI
+#define ELFOSABI_ARM_AEABI 64
+#endif
+#ifndef ELFOSABI_C6000_LINUX
+#define ELFOSABI_C6000_LINUX 65
+#endif
+#ifndef ELFOSABI_ARM
+#define ELFOSABI_ARM 97
+#endif
+#ifndef ELFOSABI_STANDALONE
+#define ELFOSABI_STANDALONE 255
+#endif
+
 static const struct
 {
   int osabi;
@@ -827,11 +844,12 @@ static const struct
 }
 osabis[] =
 {
-  { ELFOSABI_NONE, "none" },
+  { ELFOSABI_NONE, "none" }, /* SysV */
   { ELFOSABI_HPUX, "HPUX" },
   { ELFOSABI_NETBSD, "NetBSD" },
   { ELFOSABI_GNU, "GNU" },
   { ELFOSABI_GNU, "Linux" },
+  { ELFOSABI_HURD, "Hurd" },
   { ELFOSABI_SOLARIS, "Solaris" },
   { ELFOSABI_AIX, "AIX" },
   { ELFOSABI_IRIX, "Irix" },
@@ -842,7 +860,11 @@ osabis[] =
   { ELFOSABI_OPENVMS, "OpenVMS" },
   { ELFOSABI_NSK, "NSK" },
   { ELFOSABI_AROS, "AROS" },
-  { ELFOSABI_FENIXOS, "FenixOS" }
+  { ELFOSABI_FENIXOS, "FenixOS" },
+  { ELFOSABI_ARM_AEABI, "ARM EABI" }, /* I.e. bare-metal TMS320C6000 */
+  { ELFOSABI_C6000_LINUX, "TMS320C6000 Linux" }, /* Linux TMS320C6000 */
+  { ELFOSABI_ARM, "ARM" },
+  { ELFOSABI_STANDALONE, "Standalone" } /* embedded */
 };
 
 /* Return ELFOSABI_XXX for an OSABI string, OSABI.  */
